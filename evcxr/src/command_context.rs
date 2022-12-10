@@ -461,6 +461,29 @@ Panic detected. Here's some useful information if you're filing a bug report.
                 },
             ),
             AvailableCommand::new(
+                ":cargo_path",
+                "Set the path of cargo",
+                |_ctx, state, args| {
+                    if let Some(arg) = args {
+                        state.set_cargo_path(arg);
+                    }
+                    text_output(format!("cargo_path: {}", state.cargo_path()))
+                },
+            ),
+            AvailableCommand::new(
+                ":target",
+                "Set the target of cargo",
+                |_ctx, state, args| {
+                    if let Some(arg) = args {
+                        state.set_target(arg);
+                    }
+                    text_output(format!("target: {}", match state.target() {
+                        Some(target) => target,
+                        None => "None"
+                    }))
+                },
+            ),
+            AvailableCommand::new(
                 ":offline",
                 "Set offline mode when invoking cargo",
                 |_ctx, state, args| {

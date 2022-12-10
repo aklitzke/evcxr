@@ -90,6 +90,7 @@ pub(crate) struct Config {
     pub(crate) offline_mode: bool,
     pub(crate) toolchain: String,
     cargo_path: String,
+    pub(crate) target: Option<String>,
     pub(crate) rustc_path: String,
 }
 
@@ -122,6 +123,7 @@ impl Config {
             sccache: None,
             offline_mode: false,
             toolchain: String::new(),
+            target: None,
             cargo_path: default_cargo_path(),
             rustc_path: default_rustc_path(),
         }
@@ -1145,6 +1147,25 @@ impl ContextState {
 
     pub fn set_toolchain(&mut self, value: &str) {
         self.config.toolchain = value.to_owned();
+    }
+
+    pub fn set_cargo_path(&mut self, value: &str) {
+        // validate is real path
+        if Path::new(value).is_file() {
+            self.config.cargo_path = value.to_owned();
+        }
+    }
+
+    pub fn set_target(&mut self, value: &str) {
+        self.config.target = Some(value.to_owned());
+    }
+
+    pub fn cargo_path(&self) -> &str {
+        &self.config.cargo_path
+    }
+
+    pub fn target(&self) -> Option<&String> {
+        self.config.target.as_ref()
     }
 
     pub fn toolchain(&mut self) -> &str {

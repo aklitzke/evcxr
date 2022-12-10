@@ -150,6 +150,11 @@ impl Module {
         self.write_code(code_block)?;
         let output = config
             .cargo_command("check")
+            .arg("--target")
+            .arg(match config.target.as_ref() {
+                Some(target) => target,
+                None => &self.target
+            })
             .arg("--message-format=json")
             .output();
 
@@ -173,7 +178,10 @@ impl Module {
 
         command
             .arg("--target")
-            .arg(&self.target)
+            .arg(match config.target.as_ref() {
+                Some(target) => target,
+                None => &self.target
+            })
             .arg("--message-format=json")
             .arg("--")
             .arg("-C")
