@@ -103,7 +103,7 @@ impl Module {
         let module = Module {
             tmpdir,
             build_num: 0,
-            target: get_host_target()?,
+            target: "x86_64-apple-darwin".to_string(),
         };
         Ok(module)
     }
@@ -187,7 +187,7 @@ impl Module {
             .arg("-C")
             .arg("prefer-dynamic")
             .env("CARGO_TARGET_DIR", "target")
-            .env("RUSTC", &config.rustc_path);
+            .env("RUSTC", "/Users/andrewklitzke/.cargo/bin/rustc");
         if config.linker == "lld" {
             command
                 .arg("-C")

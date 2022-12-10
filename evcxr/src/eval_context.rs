@@ -122,10 +122,21 @@ impl Config {
             linker: "system".to_owned(),
             sccache: None,
             offline_mode: false,
-            toolchain: String::new(),
-            target: None,
-            cargo_path: default_cargo_path(),
-            rustc_path: default_rustc_path(),
+            // This is a total hack but it works. Basically what I'm doing
+            // is running rust inside of jupyter on rosetta mac instead
+            // of on the m1 hardware. This was because concrete, the homomorphic
+            // crypto library I am playing around with, requires nightly on m1
+            // or x86_64. maybe I should have just gotten nightly working instead,
+            // since it seems likely to be more performant. But maybe a task for
+            // another day.
+            // Another point to make, you have to make sure when you build and
+            // install the evcxr_jupyter within cargo, you use the x86_64 target.
+            // It breaks if you try to use a different architecture for evcxr and
+            // rust. prolly evcxr doesn't invoke it properly?
+            toolchain: "stable-x86_64-apple-darwin".into(),
+            target: Some("x86_64-apple-darwin".into()),
+            cargo_path: "/Users/andrewklitzke/.cargo/bin/cargo".to_string(),
+            rustc_path: "/Users/andrewklitzke/.cargo/bin/rustc".to_string(),
         }
     }
 
